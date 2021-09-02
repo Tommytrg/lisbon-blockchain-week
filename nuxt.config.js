@@ -100,7 +100,7 @@ export default {
     scss: ['~/assets/styles/colors.scss', '~/assets/styles/main.scss'],
   },
   // ...
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/i18n'],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/i18n', '@nuxt/content'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [

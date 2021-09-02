@@ -61,6 +61,12 @@
 import { format } from 'date-fns'
 
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       days: {
@@ -195,14 +201,14 @@ export default {
       }
     },
     fetchEvents() {
-      this.events = this.events
-        .sort((e1, e2) => e1.from - e2.from)
-        .map((event, index) => {
-          return {
-            ...event,
-            index,
-          }
-        })
+      this.events = this.data.map((data, index) => {
+        return {
+          index,
+          ...data,
+          to: Number(data.to),
+          from: Number(data.from),
+        }
+      })
     },
     setCurrentDay(day) {
       this.currentDay = day
