@@ -81,13 +81,13 @@ export default {
       currentEvent: null,
       isModalVisible: false,
       events: [],
-      favs: [],
-      // get favs() {
+      favorites: [],
+      // get favorites() {
       //   if (process.browser) {
-      //     const storedFavs = localStorage.getItem('favs')
-      //     console.log('storedfavs', storedFavs)
-      //     if (storedFavs) {
-      //       return JSON.parse(storedFavs)
+      //     const storedFavorites = localStorage.getItem('favorites')
+      //     console.log('storedfavorites', storedFavorites)
+      //     if (storedFavorites) {
+      //       return JSON.parse(storedFavorites)
       //     } else {
       //       return []
       //     }
@@ -95,9 +95,9 @@ export default {
       //     return []
       //   }
       // },
-      // set favs(value) {
+      // set favorites(value) {
       //   console.log('value to store', value)
-      //   return process.browser ? localStorage.setItem('favs', value) : value
+      //   return process.browser ? localStorage.setItem('favorites', value) : value
       // },
     }
   },
@@ -111,8 +111,8 @@ export default {
     },
   },
   watch: {
-    favs() {
-      this.setFavs()
+    favorites() {
+      this.setFavorites()
     },
     currentDay() {
       this.filterEvents(this.selectedEvents)
@@ -121,24 +121,24 @@ export default {
   async mounted() {
     // Load events from csv stored in github
     this.events = await fetchEvents()
-    // Load favorites from localstorage
-    this.loadFavs()
-    // Add favorite key to the events stored as fav in localstorage
-    this.setFavs()
+    // Load favorites from localStorage
+    this.loadFavorites()
+    // Add favorite key to the events stored as fav in localStorage
+    this.setFavorites()
     this.setCurrentEvent()
     // Show events for the default day
     this.filterEvents()
   },
   methods: {
-    loadFavs() {
-      this.favs = JSON.parse(localStorage.getItem('favs'))
+    loadFavorites() {
+      this.favorites = JSON.parse(localStorage.getItem('favorites')) || []
     },
-    setFavs() {
-      if (this.favs) {
+    setFavorites() {
+      if (this.favorites) {
         this.events = this.events.map((event) => {
           return {
             ...event,
-            favorite: this.favs.find((x) => x === event.title),
+            favorite: this.favorites.find((x) => x === event.title),
           }
         })
         // Filter event to re-render favorites
@@ -146,14 +146,14 @@ export default {
       }
     },
     makeEventFav(title) {
-      if (this.favs.includes(title)) {
-        this.favs = this.favs.filter((x) => x !== title)
+      if (this.favorites.includes(title)) {
+        this.favorites = this.favorites.filter((x) => x !== title)
       } else {
-        this.favs.push(title)
+        this.favorites.push(title)
       }
 
       if (process.browser) {
-        localStorage.setItem('favs', JSON.stringify(this.favs))
+        localStorage.setItem('favorites', JSON.stringify(this.favorites))
       }
     },
     setCurrentDay(day) {
