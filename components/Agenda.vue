@@ -2,6 +2,7 @@
   <div class="agenda">
     <div class="header">
       <h2 class="text">October 2021</h2>
+      {{ events.map((x) => x.favorite) }}
       <Select
         :options="options"
         :default-option="selected"
@@ -28,7 +29,7 @@
           class="row"
           :class="{ current: event.current }"
         >
-          <div class="col svg-container" @click="makeEventFav(event.index)">
+          <div class="col svg-container" @click="makeEventFav(event.title)">
             <SvgIcon
               name="heart"
               :current-class="event.favorite ? 'fav' : 'default'"
@@ -80,17 +81,24 @@ export default {
       currentEvent: null,
       isModalVisible: false,
       events: [],
-      get favs() {
-        if (process.browser) {
-          const storedFavs = localStorage.getItem('favs')
-          return storedFavs ? JSON.parse(storedFavs) : []
-        } else {
-          return []
-        }
-      },
-      set favs(value) {
-        return process.browser ? localStorage.setItem('favs', value) : value
-      },
+      favs: [],
+      // get favs() {
+      //   if (process.browser) {
+      //     const storedFavs = localStorage.getItem('favs')
+      //     console.log('storedfavs', storedFavs)
+      //     if (storedFavs) {
+      //       return JSON.parse(storedFavs)
+      //     } else {
+      //       return []
+      //     }
+      //   } else {
+      //     return []
+      //   }
+      // },
+      // set favs(value) {
+      //   console.log('value to store', value)
+      //   return process.browser ? localStorage.setItem('favs', value) : value
+      // },
     }
   },
   async fetch() {},
@@ -103,22 +111,49 @@ export default {
     },
   },
   watch: {
+    favs() {
+      this.setFavs()
+    },
     currentDay() {
       this.filterEvents(this.selectedEvents)
     },
   },
-  mounted() {
+  async mounted() {
+    // Load events from csv stored in github
+    this.events = await fetchEvents()
+    // Load favorites from localstorage
+    this.loadFavs()
+    // Add favorite key to the events stored as fav in localstorage
     this.setFavs()
     this.setCurrentEvent()
+    // Show events for the default day
     this.filterEvents()
   },
   methods: {
+    loadFavs() {
+      this.favs = JSON.parse(localStorage.getItem('favs'))
+    },
     setFavs() {
-      this.selectedEvents = this.events
-      if (this.favs && this.favs.length) {
-        this.favs.forEach((fav) => {
-          this.events[fav.index].favorite = true
+      if (this.favs) {
+        this.events = this.events.map((event) => {
+          return {
+            ...event,
+            favorite: this.favs.find((x) => x === event.title),
+          }
         })
+        // Filter event to re-render favorites
+        this.filterEvents()
+      }
+    },
+    makeEventFav(title) {
+      if (this.favs.includes(title)) {
+        this.favs = this.favs.filter((x) => x !== title)
+      } else {
+        this.favs.push(title)
+      }
+
+      if (process.browser) {
+        localStorage.setItem('favs', JSON.stringify(this.favs))
       }
     },
     setCurrentDay(day) {
@@ -129,15 +164,6 @@ export default {
     },
     closeModal() {
       this.currentEvent = null
-    },
-    makeEventFav(index) {
-      this.events[index].favorite = !this.events[index].favorite
-      if (process.browser) {
-        this.favs = JSON.stringify(
-          this.events.filter((event) => event.favorite)
-        )
-      }
-      this.filterEvents(this.selectedEvents)
     },
     getTime(timestamp) {
       return format(new Date(timestamp), `HH:mm aa`)
@@ -164,10 +190,7 @@ export default {
       this.selectedEvents = this.events
     },
     filterEvents(events) {
-      let eventsToFilter = this.events
-      if (events) {
-        eventsToFilter = events
-      }
+      const eventsToFilter = events || this.events
       const isTimeForEvent = this.days[this.currentDay].timestamp
       if (!isTimeForEvent) {
         this.currentDay = this.keyDays[0]
