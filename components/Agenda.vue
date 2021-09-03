@@ -2,7 +2,6 @@
   <div class="agenda">
     <div class="header">
       <h2 class="text">October 2021</h2>
-      {{ events.map((x) => x.favorite) }}
       <Select
         :options="options"
         :default-option="selected"
@@ -61,7 +60,7 @@
 <script>
 import { format } from 'date-fns'
 import { fetchEvents } from '../fetchEvents'
-import { EVENT_CATEGORIES, WEEK } from '~/constants.js'
+import { EVENT_CATEGORIES, WEEK, EVENTS_URL } from '~/constants.js'
 
 export default {
   props: {
@@ -74,6 +73,7 @@ export default {
     return {
       days: WEEK,
       options: EVENT_CATEGORIES,
+      eventsUrl: EVENTS_URL,
       selected: { label: 'All' },
       filteredEvents: [],
       selectedEvents: [],
@@ -103,7 +103,7 @@ export default {
   },
   async mounted() {
     // Load events from csv stored in github
-    this.events = await fetchEvents()
+    this.events = await fetchEvents(this.eventsUrl)
     // Load favorites from localStorage
     this.loadFavorites()
     // Add favorite key to the events stored as fav in localStorage

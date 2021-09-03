@@ -20,7 +20,9 @@
         </div>
         <div class="content">
           <p class="text">{{ info.description }}</p>
-          <a class="register-btn">Register</a>
+          <a class="register-btn" :href="info.registry" target="_blank"
+            >Register</a
+          >
           <a
             class="address"
             :href="`https://www.google.com/maps/dir/?api=1&destination=${info.address}`"

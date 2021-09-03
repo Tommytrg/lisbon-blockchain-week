@@ -1,3 +1,11 @@
+export const SUBMIT_EVENT_URL =
+  process.env.SUBMIT_EVENT_URL ||
+  'https://docs.google.com/forms/d/e/1FAIpQLSfNQA3MKkbA8RQBi6WElz0iLxVW4QG8bBd0HRYeMBAqDdSNAA/viewform'
+
+export const EVENTS_URL =
+  process.env.EVENTS_URL ||
+  'https://raw.githubusercontent.com/Tommytrg/liscon-week/fetch-events/content/events/data.csv'
+
 export const languages = [
   {
     name: 'English',
