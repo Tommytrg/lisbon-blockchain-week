@@ -154,23 +154,28 @@ export default {
   },
   methods: {
     setFavs() {
-      if (this.favs) {
-        this.favs.forEach((fav) => (this.events[fav.index].favorite = true))
+      this.selectedEvents = this.events
+      if (this.favs && this.favs.length) {
+        this.favs.forEach((fav) => {
+          this.events[fav.index].favorite = true
+        })
       }
     },
     async fetchEvents() {
       const data = await this.$content('events', 'data').fetch()
-      const result = data.body.sort(
-        (event1, event2) => event1.from - event2.from
-      )
-      this.events = result.map((data, index) => {
-        return {
-          index,
-          ...data,
-          to: Number(data.to),
-          from: Number(data.from),
-        }
-      })
+      data.body
+        .sort((event1, event2) => event1.from - event2.from)
+        .map((data, index) => {
+          return {
+            index,
+            ...data,
+            to: Number(data.to),
+            from: Number(data.from),
+            favorite: Boolean(data.favorite),
+            current: Boolean(data.current),
+            showInfo: Boolean(data.showInfo),
+          }
+        })
     },
     setCurrentDay(day) {
       this.currentDay = day
