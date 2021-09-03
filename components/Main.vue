@@ -1,20 +1,9 @@
 <template>
   <div class="main">
     <TopBar />
-    <Agenda :data="data" />
+    <Agenda />
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    data: {
-      type: Array,
-      default: () => [],
-    },
-  },
-}
-</script>
 
 <style lang="scss" scoped>
 .main {

@@ -158,8 +158,12 @@ export default {
         this.favs.forEach((fav) => (this.events[fav.index].favorite = true))
       }
     },
-    fetchEvents() {
-      this.events = this.data.map((data, index) => {
+    async fetchEvents() {
+      const data = await this.$content('events', 'data').fetch()
+      const result = data.body.sort(
+        (event1, event2) => event1.from - event2.from
+      )
+      this.events = result.map((data, index) => {
         return {
           index,
           ...data,
