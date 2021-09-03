@@ -59,6 +59,7 @@
 
 <script>
 import { format } from 'date-fns'
+import { fetchEvents } from '../fetchEvents'
 import { EVENT_CATEGORIES, WEEK } from '~/constants.js'
 
 export default {
@@ -78,62 +79,21 @@ export default {
       currentDay: 30,
       currentEvent: null,
       isModalVisible: false,
-      events: [
-        {
-          index: 0,
-          title: 'rAAVEE',
-          description:
-            "Join us from 6pm-11pm for dinner and drinks on the rooftop at the Salle Du Haut Conseil. After 10pm we’ll descend to the basement at Salle Hypostyle to dance the night away. Reservations are required and all attendees can claim a proof-of-rAAVE NFT as a commemorative token of our evening together. Entry includes dinner and open bar with options for all dietary restrictions (vegetarian, pescatarian, etc). Let's rAAVE! DJs - Boys Noize, Breakbot & Irfane, Busy P, Numan, SHUTL, Yuko Kakizawa, Freiboitar Must be over 18 to attend. Follow @AaveAave on Twitter. Details - This event is INVITE ONLY. No invite, no entry. Limit 1 ticket per registration, please ensure +1s register individually. Only verified guests of the event sponsors will be able to enter. Registration does not ensure admittance; you must be confirmed via your sponsor and on their private guest list. Only register under the sponsor from whom you were invited. If sold out, please reach out to irene@aave.com to be added to the waiting list. Please attend this event only if you have not been in close contact with any individual infected with COVID-19 in the past 14 days or if you are currently experiencing or have experienced in the past 14 days fever, cough, or shortness of breath. Sanitizer stations will be available on arrival and throughout the venue.",
-          current: false,
-          favorite: false,
-          showInfo: false,
-          url: 'img-example',
-          venue: 'LX FACTORY',
-          address: 'R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal',
-          categogy: 'Drinks',
-          from: 1630572601000 + 90000,
-          to: 1630572601000 + 90000 + 90000,
-        },
-        {
-          index: 1,
-          title: 'rAAVE',
-          description:
-            "Join us from 6pm-11pm for dinner and drinks on the rooftop at the Salle Du Haut Conseil. After 10pm we’ll descend to the basement at Salle Hypostyle to dance the night away. Reservations are required and all attendees can claim a proof-of-rAAVE NFT as a commemorative token of our evening together. Entry includes dinner and open bar with options for all dietary restrictions (vegetarian, pescatarian, etc). Let's rAAVE! DJs - Boys Noize, Breakbot & Irfane, Busy P, Numan, SHUTL, Yuko Kakizawa, Freiboitar Must be over 18 to attend. Follow @AaveAave on Twitter. Details - This event is INVITE ONLY. No invite, no entry. Limit 1 ticket per registration, please ensure +1s register individually. Only verified guests of the event sponsors will be able to enter. Registration does not ensure admittance; you must be confirmed via your sponsor and on their private guest list. Only register under the sponsor from whom you were invited. If sold out, please reach out to irene@aave.com to be added to the waiting list. Please attend this event only if you have not been in close contact with any individual infected with COVID-19 in the past 14 days or if you are currently experiencing or have experienced in the past 14 days fever, cough, or shortness of breath. Sanitizer stations will be available on arrival and throughout the venue.",
-          current: false,
-          favorite: false,
-          showInfo: false,
-          url: 'img-example',
-          venue: 'LX FACTORY',
-          address: 'R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal',
-          categogy: 'Drinks',
-          from: 1630572601000,
-          to: 1630572601000 + 80000,
-        },
-        {
-          index: 2,
-          title: 'Polkadot at ETHCC',
-          description:
-            'Join Polkadot at ETHCC for an intimate gathering in one of the most sexy venues in town, the SkillZ office located in the bustling Pigalle District in Paris. We will discuss the latest developments, meet with early stage projects, investors, and pioneers of the Polkadot Network. Speakers from Moonbeam Network, Manta Network, Ternoa, and TRGC.',
-          current: false,
-          favorite: false,
-          showInfo: false,
-          venue: 'LX FACTORY',
-          url: 'img-example',
-          address: 'R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal',
-          organizers: 'Witnet',
-          categogy: 'Events',
-          from: new Date().getTime(),
-          to: new Date().getTime() + 80000,
-        },
-      ],
+      events: [],
       get favs() {
-        return process.browser ? JSON.parse(localStorage.getItem('favs')) : []
+        if (process.browser) {
+          const storedFavs = localStorage.getItem('favs')
+          return storedFavs ? JSON.parse(storedFavs) : []
+        } else {
+          return []
+        }
       },
       set favs(value) {
         return process.browser ? localStorage.setItem('favs', value) : value
       },
     }
   },
+  async fetch() {},
   computed: {
     defaultDay() {
       return format(new Date(1634544000000), 'dd-MM-yyyy')
@@ -160,22 +120,6 @@ export default {
           this.events[fav.index].favorite = true
         })
       }
-    },
-    async fetchEvents() {
-      const data = await this.$content('events', 'data').fetch()
-      data.body
-        .sort((event1, event2) => event1.from - event2.from)
-        .map((data, index) => {
-          return {
-            index,
-            ...data,
-            to: Number(data.to),
-            from: Number(data.from),
-            favorite: Boolean(data.favorite),
-            current: Boolean(data.current),
-            showInfo: Boolean(data.showInfo),
-          }
-        })
     },
     setCurrentDay(day) {
       this.currentDay = day
