@@ -49,7 +49,8 @@ export default {
   },
   computed: {
     backgroundUrl() {
-      return require(`../assets/${this.info.url}.jpeg`)
+      console.log('thisinfourl', this.info.url)
+      return this.info.url || require(`@/assets/default_background.jpeg`)
     },
   },
   methods: {
