@@ -3,8 +3,8 @@ import Papa from 'papaparse'
 export function fetchEvents() {
   const fileUrl =
     process.env.FILE_URL ||
-    'https://raw.githubusercontent.com/tommytrg/liscon-week/fetch-events/content/events/data.csv'
-
+    'https://raw.githubusercontent.com/Tommytrg/liscon-week/fetch-events/content/events/data.csv'
+    
   return new Promise((resolve, reject) => {
     console.log('fetch', fetch)
     Papa.parse(fileUrl, {
