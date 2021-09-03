@@ -154,12 +154,19 @@ export default {
   },
   methods: {
     setFavs() {
-      this.selectedEvents = this.events
-      if (this.favs && this.favs.length) {
-        this.favs.forEach((fav) => {
-          this.events[fav.index].favorite = true
-        })
+      if (this.favs) {
+        this.favs.forEach((fav) => (this.events[fav.index].favorite = true))
       }
+    },
+    fetchEvents() {
+      this.events = this.data.map((data, index) => {
+        return {
+          index,
+          ...data,
+          to: Number(data.to),
+          from: Number(data.from),
+        }
+      })
     },
     setCurrentDay(day) {
       this.currentDay = day
