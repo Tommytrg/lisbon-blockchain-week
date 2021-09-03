@@ -82,23 +82,6 @@ export default {
       isModalVisible: false,
       events: [],
       favorites: [],
-      // get favorites() {
-      //   if (process.browser) {
-      //     const storedFavorites = localStorage.getItem('favorites')
-      //     console.log('storedfavorites', storedFavorites)
-      //     if (storedFavorites) {
-      //       return JSON.parse(storedFavorites)
-      //     } else {
-      //       return []
-      //     }
-      //   } else {
-      //     return []
-      //   }
-      // },
-      // set favorites(value) {
-      //   console.log('value to store', value)
-      //   return process.browser ? localStorage.setItem('favorites', value) : value
-      // },
     }
   },
   async fetch() {},
