@@ -42,7 +42,7 @@
           </div>
           <div class="col">
             <p class="label" :class="{ current: event.current }">
-              {{ event.categogy }}
+              {{ event.category }}
             </p>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default {
       } else {
         this.selectedEvents = this.events.filter((event) => {
           return (
-            event.categogy.toLowerCase() === this.selected.label.toLowerCase()
+            event.category.toLowerCase() === this.selected.label.toLowerCase()
           )
         })
       }
