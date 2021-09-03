@@ -1,3 +1,3 @@
-title,description,venue,url,address,category,from,to
-title1,description,LX FACTORY,img-example,"R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal",Events,1630583182340,1630583262340
-title2,description,LX FACTORY,img-example,"R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal",Events,1630583192340,1630583392340
+title,description,venue,url,address,category,from,to,register
+title1,description,LX FACTORY,img-example,"R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal",Events,1630583182340,1630583262340,https://www.meetup.com/home/
+title2,description,LX FACTORY,img-example,"R. Rodrigues de Faria 103, 1300-501 Lisboa, Portugal",Events,1630583192340,1630583392340,https://www.meetup.com/home/

@@ -8,6 +8,7 @@ export function fetchEvents(fileUrl) {
       skipEmptyLines: true,
       complete(results) {
         if (results.data) {
+          console.log('results', results)
           return resolve(
             results.data.map((event) => ({
               ...event,
