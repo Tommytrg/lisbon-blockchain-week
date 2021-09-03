@@ -20,7 +20,7 @@
         </div>
         <div class="content">
           <p class="text">{{ info.description }}</p>
-          <a class="register-btn" :href="info.registry" target="_blank"
+          <a class="register-btn" :href="info.register" target="_blank"
             >Register</a
           >
           <a
